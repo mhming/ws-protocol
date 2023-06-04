@@ -1,86 +1,69 @@
-from typing import (
-    List,
-    Literal,
-    Mapping,
-    NewType,
-    Optional,
-    TypedDict,
-    Union,
-)
+from typing import List, Union, Optional
 from enum import IntEnum
 
-ChannelId = NewType("ChannelId", int)
-SubscriptionId = NewType("SubscriptionId", int)
-ClientChannelId = NewType("ClientChannelId", int)
-ServiceId = NewType("ServiceId", int)
+ChannelId = int
+SubscriptionId = int
+ClientChannelId = int
+ServiceId = int
 
 
-class Parameter(TypedDict):
+class Parameter(dict):
     name: str
-    value: Union[
-        int,
-        float,
-        bool,
-        str,
-        List[int],
-        List[float],
-        List[bool],
-        List[str],
-    ]
+    value: Union[int, float, bool, str, List[int], List[float], List[bool], List[str]]
     type: Optional[str]
 
 
-class Subscription(TypedDict):
+class Subscription(dict):
     id: SubscriptionId
     channelId: ChannelId
 
 
-class ClientChannel(TypedDict):
+class ClientChannel(dict):
     id: ClientChannelId
     topic: str
     encoding: str
     schemaName: str
 
 
-class Subscribe(TypedDict):
-    op: Literal["subscribe"]
+class Subscribe(dict):
+    op: str
     subscriptions: List[Subscription]
 
 
-class Unsubscribe(TypedDict):
-    op: Literal["unsubscribe"]
+class Unsubscribe(dict):
+    op: str
     subscriptionIds: List[SubscriptionId]
 
 
-class ClientAdvertise(TypedDict):
-    op: Literal["advertise"]
+class ClientAdvertise(dict):
+    op: str
     channels: List[ClientChannel]
 
 
-class ClientUnadvertise(TypedDict):
-    op: Literal["unadvertise"]
+class ClientUnadvertise(dict):
+    op: str
     channelIds: List[ClientChannelId]
 
 
-class GetParameters(TypedDict):
-    op: Literal["getParameters"]
+class GetParameters(dict):
+    op: str
     parameterNames: List[str]
     id: Optional[str]
 
 
-class SetParameters(TypedDict):
-    op: Literal["setParameters"]
+class SetParameters(dict):
+    op: str
     parameters: List[Parameter]
     id: Optional[str]
 
 
-class SubscribeParameterUpdates(TypedDict):
-    op: Literal["subscribeParameterUpdates"]
+class SubscribeParameterUpdates(dict):
+    op: str
     parameterNames: List[str]
 
 
-class UnsubscribeParameterUpdates(TypedDict):
-    op: Literal["unsubscribeParameterUpdates"]
+class UnsubscribeParameterUpdates(dict):
+    op: str
     parameterNames: List[str]
 
 
@@ -107,12 +90,12 @@ class ClientBinaryOpcode(IntEnum):
     SERVICE_CALL_REQUEST = 2
 
 
-class ServerInfo(TypedDict):
-    op: Literal["serverInfo"]
+class ServerInfo(dict):
+    op: str
     name: str
     capabilities: List[str]
     supportedEncodings: Optional[List[str]]
-    metadata: Optional[Mapping[str, str]]
+    metadata: Optional[dict]
     sessionId: Optional[str]
 
 
@@ -122,13 +105,13 @@ class StatusLevel(IntEnum):
     ERROR = 2
 
 
-class StatusMessage(TypedDict):
-    op: Literal["status"]
+class StatusMessage(dict):
+    op: str
     level: StatusLevel
     message: str
 
 
-class ChannelWithoutId(TypedDict):
+class ChannelWithoutId(dict):
     topic: str
     encoding: str
     schemaName: str
@@ -140,7 +123,7 @@ class Channel(ChannelWithoutId):
     id: ChannelId
 
 
-class ServiceWithoutId(TypedDict):
+class ServiceWithoutId(dict):
     name: str
     type: str
     requestSchema: str
@@ -151,28 +134,28 @@ class Service(ServiceWithoutId):
     id: ServiceId
 
 
-class Advertise(TypedDict):
-    op: Literal["advertise"]
+class Advertise(dict):
+    op: str
     channels: List[Channel]
 
 
-class Unadvertise(TypedDict):
-    op: Literal["unadvertise"]
+class Unadvertise(dict):
+    op: str
     channelIds: List[ChannelId]
 
 
-class AdvertiseServices(TypedDict):
-    op: Literal["advertiseServices"]
+class AdvertiseServices(dict):
+    op: str
     services: List[Service]
 
 
-class UnadvertiseServices(TypedDict):
-    op: Literal["unadvertiseServices"]
+class UnadvertiseServices(dict):
+    op: str
     serviceIds: List[ServiceId]
 
 
-class ParameterValues(TypedDict):
-    op: Literal["parameterValues"]
+class ParameterValues(dict):
+    op: str
     parameters: List[Parameter]
     id: Optional[str]
 
